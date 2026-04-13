@@ -9,4 +9,5 @@ export interface Profile {
     description: string;
     instruments: string[];
     genres: string[];
+    avatarUrl?: string;
 }

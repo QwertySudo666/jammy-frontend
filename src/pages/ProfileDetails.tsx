@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import {useParams, useNavigate} from 'react-router-dom';
 import {profileApi} from '../api/profileApi';
 import {ProfileForm} from '../components/ProfileForm';
@@ -14,6 +14,8 @@ const getSkillStyles = (skill: string) => {
     }
 };
 
+const S3_BASE_URL = "http://localhost:4566/jammy-media";
+
 export const ProfileDetails = () => {
     const {id} = useParams<{ id: string }>();
     const navigate = useNavigate();
@@ -24,10 +26,22 @@ export const ProfileDetails = () => {
     useEffect(() => {
         if (id) {
             profileApi.getById(id)
-                .then(setProfile)
+                .then(data => {
+                    setProfile(data)
+                })
+                .catch(err => console.error("Error fetching profile:", err))
                 .finally(() => setLoading(false));
         }
     }, [id]);
+
+    const avatarUrl = useMemo(() => {
+        console.log(`Пасукдство ${profile?.avatarUrl}`)
+        if (profile?.avatarUrl) {
+            console.log(`${S3_BASE_URL}/${profile.avatarUrl}`)
+            return `${S3_BASE_URL}/${profile.avatarUrl}`;
+        }
+        return "/james.png";
+    }, [profile?.avatarUrl]);
 
     const handleUpdate = async (data: ProfileFormData) => {
         if (!id) return;
@@ -70,9 +84,12 @@ export const ProfileDetails = () => {
                 <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
                     <div className="flex items-center gap-8 pb-10 border-b border-gray-50 mb-8">
                         <img
-                            src="/james.png"
+                            src={avatarUrl}
                             alt="Profile"
                             className="w-36 h-36 rounded-full object-cover border-4 border-white shadow-xl shrink-0"
+                            onError={(e) => {
+                                (e.target as HTMLImageElement).src = "/james.png";
+                            }}
                         />
 
                         <div className="flex-1">

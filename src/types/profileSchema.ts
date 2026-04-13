@@ -8,6 +8,7 @@ export const profileSchema = z.object({
     description: z.string().max(500).optional(),
     instruments: z.array(z.string()).min(1, "Pick at least one instrument"),
     genres: z.array(z.string()).min(1, "Pick at least one genre"),
+    imageUrl: z.string().optional(),
 });
 
 export type ProfileFormData = z.infer<typeof profileSchema>;
