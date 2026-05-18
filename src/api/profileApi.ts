@@ -7,6 +7,11 @@ import type {PresignedUrl} from "../types/presignedUrl.ts";
 import axios from "axios";
 
 export const profileApi = {
+    me: async (): Promise<string | null> => {
+        const response = await apiClient.get('/profiles/me')
+        return response.data
+    },
+
     getAll: async (filters: ProfileFilters = {}): Promise<PagedResponse<Profile>> => {
         const response = await apiClient.get<PagedResponse<Profile>>('/profiles', {
             params: filters,

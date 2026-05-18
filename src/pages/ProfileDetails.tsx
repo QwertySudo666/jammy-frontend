@@ -4,6 +4,7 @@ import {profileApi} from '../api/profileApi';
 import {ProfileForm} from '../components/ProfileForm';
 import type {Profile} from '../types/profile';
 import type {ProfileFormData} from "../types/profileSchema.ts";
+import axios from "axios";
 
 const getSkillStyles = (skill: string) => {
     switch(skill) {
@@ -50,8 +51,13 @@ export const ProfileDetails = () => {
             setProfile(updated);
             setIsEditing(false);
         } catch (err) {
-            console.error(err);
-            alert("Update failed!");
+            if (axios.isAxiosError(err)) {
+                const errorMessage = err.response?.data?.message || "Update failed!";
+                alert(`Error: ${errorMessage}`);
+            } else {
+                console.error(err);
+                alert("An unexpected error occurred.");
+            }
         }
     };
 
