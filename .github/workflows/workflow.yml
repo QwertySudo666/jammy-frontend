@@ -1,0 +1,31 @@
+name: workflow.yml
+on: [ push, pull_request ]
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies(Setup node)
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: Install dependencies(Setup pnpm)
+        uses: pnpm/action-setup@v6
+        with:
+          version: 10
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build application
+        run: pnpm build
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: react-app
+          path: dist
