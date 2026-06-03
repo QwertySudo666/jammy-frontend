@@ -8,12 +8,12 @@ import axios from "axios";
 
 export const profileApi = {
     me: async (): Promise<string | null> => {
-        const response = await apiClient.get('/profiles/me')
+        const response = await apiClient.get('api/profiles/me')
         return response.data
     },
 
     getAll: async (filters: ProfileFilters = {}): Promise<PagedResponse<Profile>> => {
-        const response = await apiClient.get<PagedResponse<Profile>>('/profiles', {
+        const response = await apiClient.get<PagedResponse<Profile>>('api/profiles', {
             params: filters,
             paramsSerializer: {
                 indexes: null
@@ -22,20 +22,20 @@ export const profileApi = {
         return response.data;
     },
 
-    create: (data: ProfileFormData) => apiClient.post('/profiles', data),
+    create: (data: ProfileFormData) => apiClient.post('api/profiles', data),
 
     getById: async (id: string): Promise<Profile> => {
-        const response = await apiClient.get<Profile>(`/profiles/${id}`);
+        const response = await apiClient.get<Profile>(`api/profiles/${id}`);
         return response.data;
     },
 
     update: async (id: string, data: ProfileFormData): Promise<Profile> => {
-        const response = await apiClient.put<Profile>(`/profiles/${id}`, data);
+        const response = await apiClient.put<Profile>(`api/profiles/${id}`, data);
         return response.data;
     },
 
     getPresignedUrl: async (fileName: string): Promise<PresignedUrl> => {
-        const response = await apiClient.get<PresignedUrl>(`/media/presigned-url`, {
+        const response = await apiClient.get<PresignedUrl>(`api/media/presigned-url`, {
             params: { fileName }
         });
         return response.data;

@@ -49,7 +49,12 @@ function App() {
                                     Sign In
                                 </button>
                                 <button
-                                    onClick={() => auth.signinRedirect({extraQueryParams: {kc_action: 'register'}})}
+                                    onClick={() => auth.signinRedirect({
+                                        extraQueryParams: {
+                                            kc_action: 'register',
+                                            prompt: 'create'
+                                        }
+                                    })}
                                     // className="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-blue-700 transition-all"
                                     className="text-sm font-bold text-gray-700 hover:text-gray-900"
                                 >
@@ -70,7 +75,9 @@ function App() {
                             : <div className="text-center">
                                 <p className="text-gray-500 mb-4">Щоб створити профіль — спочатку увійди</p>
                                 <button
-                                    onClick={() => auth.signinRedirect()}
+                                    onClick={() => auth.signinRedirect({
+                                        prompt: 'login',
+                                    })}
                                     className="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold"
                                 >
                                     Log In
